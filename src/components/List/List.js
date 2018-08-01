@@ -19,10 +19,11 @@ const content = [
 export default class List extends Component {
   render() {
     return (
+    //this was an attempt to put each elemnt on a new line but nothing I tried would put each item on a new line
       <Card>
         <Heading>List Component</Heading>
         <HeadingSmall>This component displays a list.</HeadingSmall>
-        {/* display list here */}
+        {content.join("\n")}
       </Card>
     )
   }
