@@ -74,17 +74,65 @@ const items = [
   'Wisconsin',
   'Wyoming'
 ]
+var searchString = null
+var matchingElements = []
+const filterItems = (query) => {
+    return items.filter((elements) =>
+    elements.toLowerCase().indexOf(query.toLowerCase()) > -1
+    )
+  }
 
 export default class SearchList extends Component {
+    // set current search box to filter list by
+  filterUpdate () {
+    const val = this.myValue.value
+    searchString = "" + val
+
+    // if nothing is input display no results
+        if (searchString.length == 0) {
+        searchString = "zzzzzzzzzzzzzzzzzzzzzz"
+    }
+    // filter the list and update
+    matchingElements = filterItems(searchString)
+    this.forceUpdate()
+  }
   render() {
-    const { filter } = this.state
+  if (matchingElements.length == 0) {
+  return (
+  <Card>
+    <Heading color={COLORS.yellow[300]}>FilterList Component</Heading>
+          <HeadingSmall>
+            This component filters a list based on user input.
+          </HeadingSmall>
+          <input
+              type = "text"
+              ref = {(value) => this.myValue = value}
+              placeholder = "Search..."
+              onChange = {this.filterUpdate.bind(this)}
+          />
+          </Card>
+  )
+  }
     return (
+    // I was able to get all the correct results, just not able to properly format it so every element has its own
+    //box around it
       <Card>
         <Heading color={COLORS.yellow[300]}>FilterList Component</Heading>
         <HeadingSmall>
           This component filters a list based on user input.
         </HeadingSmall>
-        {/* display input and results here */}
+        <input
+            type = "text"
+            ref = {(value) => this.myValue = value}
+            placeholder = "Search..."
+            onChange = {this.filterUpdate.bind(this)}
+        />
+        <SearchResultsHeading> Results </SearchResultsHeading>
+        <SearchResultsList>
+        <SearchResult>
+        {matchingElements}
+        </SearchResult>
+        </SearchResultsList>
       </Card>
     )
   }
